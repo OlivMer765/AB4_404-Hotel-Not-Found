@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<h:html xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Sistema de Reservas - Hotel</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    </h:head>
+    <h:body>
+        <div class="card">
+
+            <h:form id="formulario-principal">
+                <p:growl id="mensajes" showDetail="true" life="3000"/>
+
+                <p:menubar>
+                    <p:menuitem value="Buscar Habitaciones" icon="pi pi-search"
+                                actionListener="#{hotelController.buscarHabitaciones}"
+                                update=":formulario-principal:tabla-habitaciones"/>
+                    <p:menuitem value="Nuevo Huésped" icon="pi pi-user-plus"
+                                oncomplete="PF('dialogHuesped').show()"/>
+                    <p:menuitem value="Nueva Reserva" icon="pi pi-calendar-plus"
+                                oncomplete="PF('dialogReserva').show()"/>
+                </p:menubar>
+
+                <h3>Habitaciones Disponibles</h3>
+                <p:dataTable id="tabla-habitaciones" var="habitacion" value="#{hotelController.habitacionesDisponibles}">
+                    <p:column headerText="Número">
+                        <h:outputText value="#{habitacion.numeroHabitacion}"/>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{habitacion.tipo}"/>
+                    </p:column>
+                    <p:column headerText="Disponible">
+                        <h:outputText value="#{habitacion.disponible ? 'Sí' : 'No'}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <h3>Reservas Actuales</h3>
+                <p:dataTable id="tabla-reservas" var="reserva" value="#{hotelController.reservas}">
+                    <p:column headerText="Huésped">
+                        <h:outputText value="#{reserva.huesped.nombre} #{reserva.huesped.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Habitación">
+                        <h:outputText value="#{reserva.habitacion.numeroHabitacion}"/>
+                    </p:column>
+                    <p:column headerText="Entrada">
+                        <h:outputText value="#{reserva.fechaEntrada}"/>
+                    </p:column>
+                    <p:column headerText="Salida">
+                        <h:outputText value="#{reserva.fechaSalida}"/>
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <p:commandButton value="Cancelar" icon="pi pi-times"
+                                         actionListener="#{hotelController.cancelarReserva(reserva)}"
+                                         update="@form"
+                                         process="@this"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="form-huesped">
+                <p:dialog header="Registrar Huésped" modal="true" widgetVar="dialogHuesped" responsive="true">
+                    <p:outputPanel class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{hotelController.nuevoHuesped.nombre}" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="apellido" value="Apellido"/>
+                            <p:inputText id="apellido" value="#{hotelController.nuevoHuesped.apellido}" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="correo" value="Correo"/>
+                            <p:inputText id="correo" value="#{hotelController.nuevoHuesped.correo}" required="true"/>
+                        </div>
+                        <p:commandButton value="Guardar" icon="pi pi-save"
+                                         actionListener="#{hotelController.registrarHuesped}"
+                                         update=":formulario-principal :form-huesped"
+                                         oncomplete="PF('dialogHuesped').hide()"/>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="form-reserva">
+                <p:dialog header="Nueva Reserva" modal="true" widgetVar="dialogReserva" responsive="true">
+                    <p:outputPanel class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="huespedSelect" value="Huésped"/>
+                            <p:selectOneMenu id="huespedSelect" value="#{hotelController.reserva.huesped}">
+                                <f:selectItems value="#{hotelController.huespedes}" var="h"
+                                               itemLabel="#{h.nombre} #{h.apellido}" itemValue="#{h}"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="habitacionSelect" value="Habitación"/>
+                            <p:selectOneMenu id="habitacionSelect" value="#{hotelController.reserva.habitacion}">
+                                <f:selectItems value="#{hotelController.habitacionesDisponibles}" var="hab"
+                                               itemLabel="#{hab.numeroHabitacion} - #{hab.tipo}" itemValue="#{hab}"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="entrada" value="Fecha Entrada"/>
+                            <p:datePicker id="entrada" value="#{hotelController.reserva.fechaEntrada}" showIcon="true"/>
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="salida" value="Fecha Salida"/>
+                            <p:datePicker id="salida" value="#{hotelController.reserva.fechaSalida}" showIcon="true"/>
+                        </div>
+
+                        <p:commandButton value="Reservar" icon="pi pi-check"
+                                         actionListener="#{hotelController.crearReserva}"
+                                         update=":formulario-principal :form-reserva"
+                                         oncomplete="PF('dialogReserva').hide()"/>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </h:body>
+</h:html>
+

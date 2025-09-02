@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HuespedesService implements IHuespedesService {
+public class HuespedService implements IHuespedService {
 
     @Autowired
     private HuespedRepository huespedRepository;

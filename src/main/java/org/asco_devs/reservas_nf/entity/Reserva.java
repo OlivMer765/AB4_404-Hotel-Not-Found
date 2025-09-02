@@ -2,9 +2,7 @@ package org.asco_devs.reservas_nf.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Date;
-
 
 @Entity(name = "Reserva")
 @Data

@@ -4,14 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-@Entity(name = "Huesped")
+@Entity(name = "Huespedes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 
-public class Huesped {
+public class Huespedes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idHuesped;

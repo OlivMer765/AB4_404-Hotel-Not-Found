@@ -25,12 +25,12 @@ public class HuespedService implements IHuespedService {
     }
 
     @Override
-    public void guardarhuespedes(Huesped huesped) {
+    public void guardarHuespedes(Huesped huesped) {
         huespedRepository.save(huesped);
     }
 
     @Override
-    public void eliminarhuespedes(Huesped huesped) {
+    public void eliminarHuesped(Huesped huesped) {
         huespedRepository.delete(huesped);
     }
 }

@@ -2,8 +2,8 @@ package org.asco_devs.reservas_nf.controller;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import org.asco_devs.reservas_nf.entity.Huespedes;
-import org.asco_devs.reservas_nf.service.IHuespedesService;
+import org.asco_devs.reservas_nf.entity.Huesped;
+import org.asco_devs.reservas_nf.service.IHuespedService;
 import org.primefaces.PrimeFaces;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -16,13 +16,13 @@ import java.util.List;
 @ViewScoped
 @Data
 @Component
-public class HuespedesController {
+public class HuespedController {
 
     @Autowired
-    IHuespedesService huespedService;
-    private List<Huespedes> huespedes;
-    private Huespedes huespedSeleccionado;
-    private static Logger logger = LoggerFactory.getLogger(HuespedesController.class);
+    IHuespedService huespedService;
+    private List<Huesped> huespedes;
+    private Huesped huespedSeleccionado;
+    private static Logger logger = LoggerFactory.getLogger(HuespedController.class);
 
     @PostConstruct
     public void init() {
@@ -35,18 +35,17 @@ public class HuespedesController {
     }
 
     public void agregarHuesped() {
-        this.huespedSeleccionado = new Huespedes();
+        this.huespedSeleccionado = new Huesped();
     }
 
     public void guardarHuesped() {
         logger.info("Huesped a guardar: "+ this.huespedSeleccionado);
-
         if(this.getHuespedes()==null){
-            this.huespedService.guardarHuesped(this.huespedSeleccionado);
+            this.huespedService.guardarHuespedes(this.huespedSeleccionado);
             this.huespedes.add(this.huespedSeleccionado);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Huesped Agregado."));
         } else {
-            this.huespedSeleccionado.guardarHuesped(this.huespedSeleccionado);
+            this.huespedService.guardarHuespedes(this.huespedSeleccionado);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Huesped Actualizado"));
         }
         PrimeFaces.current().executeScript("PF('ventanaModalHuesped').hide()");

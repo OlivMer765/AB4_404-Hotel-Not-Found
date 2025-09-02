@@ -1,7 +1,11 @@
 package org.asco_devs.reservas_nf.service;
 
-import org.springframework.stereotype.Repository;
+import org.asco_devs.reservas_nf.entity.Huesped;
+import java.util.List;
 
-@Repository
-public interface IHuespedRepository  extends JpaRepository<Huesped, Integer> {
+public interface IHuespedesService {
+    public List<Huesped> listarHuespedes();
+    public Huesped buscarHuespedes(Integer idHuesped);
+    public void guardarhuespedes(Huesped huesped);
+    public void eliminarhuespedes(Huesped huesped);
 }

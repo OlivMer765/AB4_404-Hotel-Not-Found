@@ -6,6 +6,6 @@ import java.util.List;
 public interface IHuespedService {
     public List<Huesped> listarHuespedes();
     public Huesped buscarHuespedes(Integer idHuesped);
-    public void guardarhuespedes(Huesped huesped);
-    public void eliminarhuespedes(Huesped huesped);
+    public void guardarHuespedes(Huesped huesped);
+    public void eliminarHuesped(Huesped huesped);
 }

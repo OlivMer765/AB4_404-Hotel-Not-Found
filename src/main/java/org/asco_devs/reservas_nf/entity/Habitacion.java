@@ -6,11 +6,8 @@ import lombok.*;
 
 @Entity(name = "Habitaciones")
 @Data
-
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 
 public class Habitacion {
     @Id

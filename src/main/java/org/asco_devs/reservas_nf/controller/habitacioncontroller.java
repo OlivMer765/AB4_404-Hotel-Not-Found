@@ -44,12 +44,12 @@ public class habitacioncontroller {
         if(this.habitacionSelecionado.getIdHabitacion() == null){
             this.habitacionService.guardarHabitacion(this.habitacionSelecionado);
             this.habitaciones.add(this.habitacionSelecionado);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Agregado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Agregada"));
         }
         //modificar
         else {
             this.habitacionService.guardarHabitacion(this.habitacionSelecionado);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Actualizado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Actualizada"));
         }
 
         PrimeFaces.current().executeScript("PF('ventanaModalHabitaciones').hide()");
@@ -65,7 +65,7 @@ public class habitacioncontroller {
         this.habitaciones.remove(this.habitacionSelecionado);
         this.habitacionSelecionado = null;
         //Confirmar accion
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Eliminado"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Habitacion Eliminada"));
         PrimeFaces.current().ajax().update("formulario-habitaciones:mensaje-emergente",
                 "formulario-habitaciones:tabla-habitaciones");
     }

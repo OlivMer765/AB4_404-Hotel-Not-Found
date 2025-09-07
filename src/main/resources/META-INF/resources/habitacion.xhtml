@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>HABITACIONES ASCO-DEVS</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+</h:head>
+<h:body style="min-height:100vh; display:flex; flex-direction:column; background-color:#1a1a1a; color:#f5f5f5;">
+
+    <div class="card mb-3 p-4 surface-card">
+        <h:form id="formulario-habitaciones">
+            <p:growl id="mensaje-emergente" showDetails="true"/>
+
+            <div class="card mb-3 surface-card">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                update=":formulario-habitaciones:tabla-habitaciones"
+                                actionListener="#{habitacioncontroller.cargarDatos}"/>
+                    <p:submenu label="Principal" icon="pi pi-home" >
+                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
+                        <p:menuitem value="Huéspedes" icon="pi pi-users" outcome="huesped.xhtml"/>
+                        <p:menuitem value="Reservas" icon="pi pi-calendar" outcome="reserva.xhtml"/>
+                    </p:submenu>
+                    <p:menuitem value="Nueva Habitación" icon="pi pi-fw pi-plus"
+                                actionListener="#{habitacioncontroller.agregarHabitacion()}"
+                                update="formulario-modal:ventana-habitacion"
+                                oncomplete="PF('ventanaModalHabitacion').show()"/>
+                </p:menubar>
+            </div>
+
+            <div class="card surface-card">
+                <p:dataTable value="#{habitacioncontroller.habitaciones}" var="habitacion" id="tabla-habitaciones"
+                             widgetVar="tablaHabitacion">
+                    <f:facet name="header">
+                        <div class="flex justify-content-center flex-wrap card-container">
+                            <div class="flex align-items-center justify-content-center w-rem20 h4rem surface-card font-bold m-2 border-round px-4">
+                                <h3>Registro de Habitaciones - ASCO</h3>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{habitacion.idHabitacion}"/>
+                    </p:column>
+
+                    <p:column headerText="ESTADO">
+                        <h:outputText value="#{habitacion.estado}"/>
+                    </p:column>
+
+                    <p:column headerText="TIPO">
+                        <h:outputText value="#{habitacion.tipo}"/>
+                    </p:column>
+
+                    <p:column headerText="C.R.U.D.">
+                        <div class="flex gap-2">
+                            <p:commandButton value="Editar" icon="pi pi-pencil"
+                                             update=":formulario-modal:ventana-habitacion"
+                                             process="@this"
+                                             oncomplete="PF('ventanaModalHabitacion').show()"
+                                             onclick="PF('ventanaModalHabitacion').hide()"
+                                             class="ui-button-primary">
+                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacioncontroller.habitacionSelecionado}"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                             class="ui-button-danger"
+                                             process="@this"
+                                             oncomplete="PF('ventanaEliminarHabitacion').show()">
+                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacioncontroller.habitacionSelecionado}"/>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+
+        <!-- Modal -->
+        <h:form id="formulario-modal">
+            <p:dialog header="Detalle Habitaciones" showEffect="fade" modal="true" widgetVar="ventanaModalHabitacion" responsive="true">
+                <p:outputPanel id="ventana-habitacion" class="ui-fluid">
+
+                    <div class="field">
+                        <p:outputLabel for="tipo" value="Tipo: " />
+                        <p:selectOneMenu id="tipo" value="#{habitacioncontroller.habitacionSelecionado.tipo}" required="true" style="width:100%">
+                            <f:selectItem itemLabel="Seleccione un tipo" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Simple" itemValue="Individual"/>
+                            <f:selectItem itemLabel="Doble" itemValue="Doble"/>
+                            <f:selectItem itemLabel="Suite" itemValue="Suite"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="estado" value="Estado: " />
+                        <p:selectOneMenu id="estado" value="#{habitacioncontroller.habitacionSelecionado.estado}" required="true" style="width:100%">
+                            <f:selectItem itemLabel="Seleccione un estado" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Disponible" itemValue="Disponible"/>
+                            <f:selectItem itemLabel="Ocupada" itemValue="Ocupada"/>
+                        </p:selectOneMenu>
+                    </div>
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-habitacion @this" onclick="PF('ventanaModalHabitacion').hide()" actionListener="#{habitacioncontroller.guardarHabitacion()}"/>
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalHabitacion').hide()" class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="ventanaEliminarHabitacion" ShowEffect="fade" width="300" message="Desea eliminar la habitación?" header="Confirmar" severity="warn">
+                <p:commandButton value="Si" icon="pi pi-check" process="@this" actionListener="#{habitacioncontroller.eliminarHabitacion()}" oncomplete="PF('ventanaEliminarHabitacion').hide()" />
+                <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarHabitacion').hide()" styleClass="ui-button-secondary" type="button"/>
+            </p:confirmDialog>
+        </h:form>
+    </div>
+
+    <footer style="background-color:#1a1a1a; color:#f5f5f5; text-align:center; padding:1rem; margin-top:auto;">
+        <p class="m-0">© 2025 404 Hotel Not Found - Todos los derechos reservados</p>
+    </footer>
+</h:body>
+</html>

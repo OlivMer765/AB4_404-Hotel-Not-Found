@@ -21,13 +21,11 @@ public class AuthFilter implements Filter {
 
         String path = req.getRequestURI();
 
-        // Permitir login, registro y recursos estáticos
         if (path.contains("login.xhtml") || path.contains("register.xhtml") || path.contains("javax.faces.resource")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Verificar sesión
         Object usuario = req.getSession().getAttribute("authController");
         if (usuario == null) {
             res.sendRedirect(req.getContextPath() + "/login.xhtml");

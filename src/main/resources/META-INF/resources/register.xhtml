@@ -8,47 +8,71 @@
         <link href="https://cdn.jsdelivr.net/npm/primeflex@3.2.1/primeflex.min.css" rel="stylesheet" />
     </h:head>
     <h:body class="surface-900 flex align-items-center justify-content-center min-h-screen">
-        <div class="surface-card p-4 shadow-2 border-round w-25rem bg-gray-800">
-            <div class="text-center">
-                <p:graphicImage value="/images/user-icon.png" alt="User Icon" class="w-6rem h-6rem border-circle" />
-                <h3 class="text-white mt-3">Registro 404 Hotel Not Found</h3>
-            </div>
-            <div class="mt-4">
-                <div class="formgrid grid">
-                    <div class="field col-12 md:col-6">
-                        <p:inputText id="nombre" placeholder="Nombre" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+        <h:form id="formRegistro">
+            <div class="surface-card p-4 shadow-2 border-round w-25rem bg-gray-800">
+                <div class="text-center">
+                    <p:graphicImage value="/images/user-icon.png" alt="User Icon" class="w-6rem h-6rem border-circle" />
+                    <h3 class="text-white mt-3">Registro 404 Hotel Not Found</h3>
+                </div>
+                <div class="mt-4">
+                    <div class="formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <p:inputText id="nombre"
+                                         placeholder="Nombre"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                         value="#{authController.nombre}"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <p:inputText id="apellido"
+                                         placeholder="Apellido"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                         value="#{authController.apellido}"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:inputText id="correo"
+                                         placeholder="Correo"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                         value="#{authController.correo}"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:inputText id="telefono"
+                                         placeholder="Teléfono"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                         value="#{authController.telefono}"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:inputText id="direccion"
+                                         placeholder="Dirección"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                         value="#{authController.direccion}"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:password id="contrasena"
+                                        placeholder="Contraseña"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        toggleMask="true"
+                                        value="#{authController.contrasena}"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:password id="confirmContrasena"
+                                        placeholder="Confirmar contraseña"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        toggleMask="true"/>
+                        </div>
+                        <div class="field col-12">
+                            <p:commandButton value="Submit"
+                                             action="#{authController.registrar}"
+                                             class="w-full"
+                                             update="@form"
+                                             inputStyleClass="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"/>
+                        </div>
                     </div>
-                    <div class="field col-12 md:col-6">
-                        <p:inputText id="apellido" placeholder="Apellido" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                    </div>
-                    <div class="field col-12">
-                        <p:inputText id="correo" placeholder="Correo" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                    </div>
-                    <div class="field col-12">
-                        <p:inputText id="telefono" placeholder="Teléfono" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                    </div>
-                    <div class="field col-12">
-                        <p:inputText id="direccion" placeholder="Dirección" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                    </div>
-                    <div class="field col-12">
-                        <p:password id="contrasena" placeholder="Contraseña"
-                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    toggleMask="true" />
-                    </div>
-                    <div class="field col-12">
-                        <p:password id="confirmContrasena" placeholder="Confirmar contraseña"
-                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    toggleMask="true" />
-                    </div>
-                    <div class="field col-12">
-                        <p:commandButton value="Submit" class="w-full" inputStyleClass="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"/>
+                    <div class="text-center mt-3">
+                        <p:outputLabel value="Ya tienes una cuenta? " class="text-white" />
+                        <p:commandLink value="Login" class="text-blue-200" outcome="login.xhtml" />
                     </div>
                 </div>
-                <div class="text-center mt-3">
-                    <p:outputLabel value="Ya tienes una cuenta? " class="text-white" />
-                    <p:commandLink value="Login" class="text-blue-200" outcome="login.xhtml" />
-                </div>
             </div>
-        </div>
+        </h:form>
     </h:body>
 </h:html>

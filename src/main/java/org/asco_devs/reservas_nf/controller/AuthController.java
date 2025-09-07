@@ -1,6 +1,7 @@
 package org.asco_devs.reservas_nf.controller;
 
 import jakarta.annotation.ManagedBean;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import lombok.Data;
@@ -30,6 +31,24 @@ public class AuthController implements Serializable {
 
     private Usuario usuarioLogueado;
 
+    //Crear admin por defecto al iniciar
+    @PostConstruct
+    public void initAdmin() {
+        Optional<Usuario> adminExistente = usuarioService.findByCorreo("admin@correo.com");
+        if (adminExistente.isEmpty()) {
+            Usuario admin = Usuario.builder()
+                    .nombre("Admin")
+                    .apellido("Default")
+                    .correo("admin@correo.com")
+                    .telefono("00000000")
+                    .direccion("N/A")
+                    .contrasena("admin123")
+                    .rol("ADMIN")
+                    .build();
+            usuarioService.registrar(admin);
+        }
+    }
+
     public String registrar() {
         Usuario usuario = Usuario.builder()
                 .nombre(nombre)
@@ -38,6 +57,7 @@ public class AuthController implements Serializable {
                 .telefono(telefono)
                 .direccion(direccion)
                 .contrasena(contrasena)
+                .rol("USER")
                 .build();
         usuarioService.registrar(usuario);
         limpiarCampos();
@@ -51,7 +71,13 @@ public class AuthController implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext()
                     .getSessionMap().put("authController", this);
             limpiarCampos();
-            return "index.xhtml?faces-redirect=true";
+
+            // Redirigir según rol
+            if ("ADMIN".equals(usuarioLogueado.getRol())) {
+                return "admin.xhtml?faces-redirect=true";
+            } else {
+                return "index.xhtml?faces-redirect=true";
+            }
         }
         return "login.xhtml?error=true";
     }

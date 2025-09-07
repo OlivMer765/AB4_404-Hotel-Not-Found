@@ -1,6 +1,5 @@
 package org.asco_devs.reservas_nf.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.asco_devs.reservas_nf.entity.Usuario;
 import org.asco_devs.reservas_nf.repository.UsuarioRepository;
@@ -21,5 +20,10 @@ public class UsuarioService {
     public Optional<Usuario> login(String correo, String contrasena) {
         return usuarioRepository.findByCorreo(correo)
                 .filter(u -> u.getContrasena().equals(contrasena));
+    }
+
+    // <-- Agregar este método
+    public Optional<Usuario> findByCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
     }
 }

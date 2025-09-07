@@ -8,7 +8,8 @@ create table usuarios (
     correo varchar(128) unique not null,
     telefono varchar(8) not null,
     direccion varchar(128) not null,
-    contrasena varchar(100) not null
+    contrasena varchar(100) not null,
+     rol varchar(20) not null default 'USER'
 );
 
 create table Huespedes (

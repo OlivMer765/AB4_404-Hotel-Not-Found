@@ -1,4 +1,4 @@
-    create database HotelDB;
+create database HotelDB;
 use HotelDB;
 
 create table usuarios (

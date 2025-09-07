@@ -10,6 +10,7 @@ import org.asco_devs.reservas_nf.service.IReservaService;
 import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +19,9 @@ import java.util.List;
 @ViewScoped
 @Data
 public class ReservaController {
-    IReservaService reservaService;
+    @Autowired
+    private IReservaService reservaService;
+
     private List<Reserva> reservas;
     private Reserva reservaSelecionada;
     private static Logger logger = LoggerFactory.getLogger(ReservaController.class);

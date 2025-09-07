@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Huéspedes - 404 Hotel Not Found</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+</h:head>
+<h:body style="min-height:100vh; display:flex; flex-direction:column; background-color:#1a1a1a; color:#f5f5f5;">
+
+    <div class="card mb-3 p-4 surface-card">
+        <h:form id="formulario-huespedes">
+            <p:growl id="mensaje-emergente" showDetails="true"/>
+
+            <div class="card mb-3 surface-card">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                update=":formulario-huespedes:tabla-huespedes"
+                                actionListener="#{huespedController.cargarDatos}"/>
+                    <p:submenu label="Principal" icon="pi pi-home">
+                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
+                        <p:menuitem value="Reservas" icon="pi pi-calendar" outcome="reserva.xhtml"/>
+                        <p:menuitem value="Habitaciones" icon="pi pi-home" outcome="habitacion.xhtml"/>
+                    </p:submenu>
+                    <p:menuitem value="Nuevo Huésped" icon="pi pi-fw pi-plus"
+                                actionListener="#{huespedController.agregarHuesped()}"
+                                update="formulario-modal:ventana-huesped"
+                                oncomplete="PF('ventanaModalHuesped').show()"/>
+                </p:menubar>
+            </div>
+
+            <div class="card surface-card">
+                <p:dataTable value="#{huespedController.huespedes}" var="huesped" id="tabla-huespedes"
+                             widgetVar="tablaHuesped">
+                    <f:facet name="header">
+                        <div class="flex justify-content-center flex-wrap card-container">
+                            <div class="flex align-items-center justify-content-center w-rem20 h4rem surface-card font-bold m-2 border-round px-4">
+                                <h3>Registro de Huéspedes - 404 Hotel Not Found</h3>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{huesped.idHuesped}"/>
+                    </p:column>
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{huesped.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{huesped.apellido}"/>
+                    </p:column>
+
+                    <p:column headerText="Correo">
+                        <h:outputText value="#{huesped.correo}"/>
+                    </p:column>
+
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{huesped.telefono}"/>
+                    </p:column>
+
+                    <p:column headerText="Dirección">
+                        <h:outputText value="#{huesped.direccion}"/>
+                    </p:column>
+
+                    <p:column headerText="C.R.U.D.">
+                        <div class="flex gap-2">
+                            <p:commandButton value="Editar" icon="pi pi-pencil"
+                                             update=":formulario-modal:ventana-huesped"
+                                             process="@this"
+                                             oncomplete="PF('ventanaModalHuesped').show()"
+                                             onclick="PF('ventanaModalHuesped').hide()"
+                                             class="ui-button-primary">
+                                <f:setPropertyActionListener value="#{huesped}" target="#{huespedController.huespedSeleccionado}"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="Eliminar" icon="pi pi-trash"
+                                             class="ui-button-danger"
+                                             process="@this"
+                                             oncomplete="PF('ventanaEliminarHuesped').show()">
+                                <f:setPropertyActionListener value="#{huesped}" target="#{huespedController.huespedSeleccionado}"/>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+
+        <h:form id="formulario-modal">
+            <p:dialog header="Detalle Huésped" showEffect="fade" modal="true" widgetVar="ventanaModalHuesped" responsive="true">
+                <p:outputPanel id="ventana-huesped" class="ui-fluid">
+
+                    <div class="field">
+                        <p:outputLabel for="nombre" value="Nombre: " />
+                        <p:inputText id="nombre" value="#{huespedController.huespedSeleccionado.nombre}" required="true"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="apellido" value="Apellido: " />
+                        <p:inputText id="apellido" value="#{huespedController.huespedSeleccionado.apellido}" required="true"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="correo" value="Correo: " />
+                        <p:inputText id="correo" value="#{huespedController.huespedSeleccionado.correo}" required="true"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="telefono" value="Teléfono: " />
+                        <p:inputText id="telefono" value="#{huespedController.huespedSeleccionado.telefono}" required="true"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="direccion" value="Dirección: " />
+                        <p:inputText id="direccion" value="#{huespedController.huespedSeleccionado.direccion}" required="true"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="contrasena" value="Contraseña: " />
+                        <p:password id="contrasena" value="#{huespedController.huespedSeleccionado.contrasena}" required="true"/>
+                    </div>
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-huesped @this" onclick="PF('ventanaModalHuesped').hide()" actionListener="#{huespedController.guardarHuesped()}"/>
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalHuesped').hide()" class="ui-button-secondary" type="button"/>
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="ventanaEliminarHuesped" ShowEffect="fade" width="300" message="Desea eliminar el huésped?" header="Confirmar" severity="warn">
+                <p:commandButton value="Si" icon="pi pi-check" process="@this" actionListener="#{huespedController.eliminarHuesped()}" oncomplete="PF('ventanaEliminarHuesped').hide()" />
+                <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarHuesped').hide()" styleClass="ui-button-secondary" type="button"/>
+            </p:confirmDialog>
+        </h:form>
+    </div>
+
+    <footer style="background-color:#1a1a1a; color:#f5f5f5; text-align:center; padding:1rem; margin-top:auto;">
+        <p class="m-0">© 2025 404 Hotel Not Found - Todos los derechos reservados</p>
+    </footer>
+</h:body>
+</html>

@@ -7,72 +7,72 @@
         <title>Registro 404 Hotel Not Found</title>
         <link href="https://cdn.jsdelivr.net/npm/primeflex@3.2.1/primeflex.min.css" rel="stylesheet" />
     </h:head>
-    <h:body class="surface-900 flex align-items-center justify-content-center min-h-screen">
-        <h:form id="formRegistro">
+    <h:body class="surface-900 flex flex-column min-h-screen">
+
+        <h:form id="formRegistro" class="flex-grow-1 flex align-items-center justify-content-center">
             <div class="surface-card p-4 shadow-2 border-round w-25rem bg-gray-800">
                 <div class="text-center">
-                    <p:graphicImage value="/images/user-icon.png" alt="User Icon" class="w-6rem h-6rem border-circle" />
-                    <h3 class="text-white mt-3">Registro 404 Hotel Not Found</h3>
+                    <h1 class="text-black mt-3">
+                        Register
+                        <i class="pi pi-user ml-2"></i>
+                    </h1>
+                    <h5 class="text-black mt-3">404 Hotel Not Found</h5>
                 </div>
                 <div class="mt-4">
                     <div class="formgrid grid">
                         <div class="field col-12 md:col-6">
-                            <p:inputText id="nombre"
-                                         placeholder="Nombre"
-                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                            <p:inputText id="nombre" placeholder="Nombre"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                          value="#{authController.nombre}"/>
                         </div>
                         <div class="field col-12 md:col-6">
-                            <p:inputText id="apellido"
-                                         placeholder="Apellido"
-                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                            <p:inputText id="apellido" placeholder="Apellido"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                          value="#{authController.apellido}"/>
                         </div>
                         <div class="field col-12">
-                            <p:inputText id="correo"
-                                         placeholder="Correo"
-                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                            <p:inputText id="correo" placeholder="Correo"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                          value="#{authController.correo}"/>
                         </div>
                         <div class="field col-12">
-                            <p:inputText id="telefono"
-                                         placeholder="Teléfono"
-                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                            <p:inputText id="telefono" placeholder="Teléfono"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                          value="#{authController.telefono}"/>
                         </div>
                         <div class="field col-12">
-                            <p:inputText id="direccion"
-                                         placeholder="Dirección"
-                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                            <p:inputText id="direccion" placeholder="Dirección"
+                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                          value="#{authController.direccion}"/>
                         </div>
                         <div class="field col-12">
-                            <p:password id="contrasena"
-                                        placeholder="Contraseña"
-                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                        toggleMask="true"
+                            <p:password id="contrasena" placeholder="Contraseña" toggleMask="true"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"
                                         value="#{authController.contrasena}"/>
                         </div>
                         <div class="field col-12">
-                            <p:password id="confirmContrasena"
-                                        placeholder="Confirmar contraseña"
-                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                        toggleMask="true"/>
+                            <p:password id="confirmContrasena" placeholder="Confirmar contraseña" toggleMask="true"
+                                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round w-full"/>
                         </div>
                         <div class="field col-12">
-                            <p:commandButton value="Submit"
+                            <p:commandButton value="Registrar"
                                              action="#{authController.registrar}"
-                                             class="w-full"
-                                             update="@form"
-                                             inputStyleClass="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"/>
+                                             class="w-full p-button p-button-info"
+                                             update="@form"/>
                         </div>
                     </div>
+
                     <div class="text-center mt-3">
-                        <p:outputLabel value="Ya tienes una cuenta? " class="text-white" />
+                        <p:outputLabel value="Ya tienes una cuenta? " class="text-black" />
                         <p:commandLink value="Login" class="text-blue-200" outcome="login.xhtml" />
                     </div>
                 </div>
             </div>
         </h:form>
+
+        <footer class="bg-gray-900 text-white text-center p-3">
+            <p class="m-0">© 2025 404 Hotel Not Found - Todos los derechos reservados</p>
+        </footer>
+
     </h:body>
 </h:html>

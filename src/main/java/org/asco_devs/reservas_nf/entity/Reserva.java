@@ -17,5 +17,4 @@ public class Reserva {
     private Date fechaSalida;
     private Integer idHuesped;
     private Integer idHabitacion;
-    private String contraseña;
 }

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Usuarios - 404 Hotel Not Found</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+</h:head>
+<h:body style="min-height:100vh; display:flex; flex-direction:column; background-color:#1a1a1a; color:#f5f5f5;">
+
+    <div class="card mb-3 p-4 surface-card">
+        <h:form id="formulario-usuarios">
+            <p:growl id="mensaje-emergente" showDetails="true"/>
+
+            <div class="card mb-3 surface-card">
+                <p:menubar>
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
+                                update=":formulario-usuarios:tabla-usuarios"
+                                actionListener="#{usuarioController.cargarDatos}"/>
+                    <p:submenu label="Principal" icon="pi pi-th-large">
+                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
+                        <p:menuitem value="Huéspedes" icon="pi pi-users" outcome="huesped.xhtml"/>
+                        <p:menuitem value="Habitaciones" icon="pi pi-home" outcome="habitacion.xhtml"/>
+                        <p:menuitem value="Reservas" icon="pi pi-calendar" outcome="reserva.xhtml"/>
+                    </p:submenu>
+                    <p:menuitem value="Nuevo Usuario" icon="pi pi-fw pi-plus"
+                                actionListener="#{usuarioController.agregarUsuario}"
+                                update="formulario-modal:ventana-usuario"
+                                oncomplete="PF('ventanaModalUsuario').show()"/>
+                </p:menubar>
+            </div>
+
+            <div class="card surface-card">
+                <p:dataTable value="#{usuarioController.usuarios}" var="usuario" id="tabla-usuarios"
+                             widgetVar="tablaUsuario">
+                    <f:facet name="header">
+                        <div class="flex justify-content-center flex-wrap card-container">
+                            <div class="flex align-items-center justify-content-center w-rem20 h4rem surface-card font-bold m-2 border-round px-4">
+                                <h3>Registro de Usuarios - 404 Hotel Not Found</h3>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{usuario.id}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{usuario.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{usuario.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Correo">
+                        <h:outputText value="#{usuario.correo}"/>
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{usuario.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Dirección">
+                        <h:outputText value="#{usuario.direccion}"/>
+                    </p:column>
+                    <p:column headerText="Rol">
+                        <h:outputText value="#{usuario.rol}"/>
+                    </p:column>
+
+                    <p:column headerText="C.R.U.D.">
+                        <div class="flex gap-2">
+                            <p:commandButton  icon="pi pi-pencil"
+                                             update=":formulario-modal:ventana-usuario"
+                                             process="@this"
+                                             oncomplete="PF('ventanaModalUsuario').show()"
+                                             class="ui-button-primary">
+                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioController.usuarioSeleccionado}"/>
+                            </p:commandButton>
+
+                            <p:commandButton  icon="pi pi-trash"
+                                             class="ui-button-danger"
+                                             process="@this"
+                                             oncomplete="PF('ventanaEliminarUsuario').show()">
+                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioController.usuarioSeleccionado}"/>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+
+        <h:form id="formulario-modal">
+            <p:dialog header="Detalle Usuario" showEffect="fade" modal="true" widgetVar="ventanaModalUsuario" responsive="true">
+                <p:outputPanel id="ventana-usuario" class="ui-fluid">
+
+                    <div class="field">
+                        <p:outputLabel for="nombre" value="Nombre: " />
+                        <p:inputText id="nombre" value="#{usuarioController.usuarioSeleccionado.nombre}" required="true" style="width:100%"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="apellido" value="Apellido: " />
+                        <p:inputText id="apellido" value="#{usuarioController.usuarioSeleccionado.apellido}" required="true" style="width:100%"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="correo" value="Correo: " />
+                        <p:inputText id="correo" value="#{usuarioController.usuarioSeleccionado.correo}" required="true" style="width:100%"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="telefono" value="Teléfono: " />
+                        <p:inputText id="telefono" value="#{usuarioController.usuarioSeleccionado.telefono}" required="true" style="width:100%"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="direccion" value="Dirección: " />
+                        <p:inputText id="direccion" value="#{usuarioController.usuarioSeleccionado.direccion}" required="true" style="width:100%"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="contrasena" value="Contraseña: " />
+                        <p:password id="contrasena" value="#{usuarioController.usuarioSeleccionado.contrasena}"
+                                    required="true" feedback="true" toggleMask="true" style="width:100%" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="rol" value="Rol: " />
+                        <p:selectOneMenu id="rol" value="#{usuarioController.usuarioSeleccionado.rol}" required="true" style="width:100%">
+                            <f:selectItem itemLabel="Seleccione un rol" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="ADMIN" itemValue="ADMIN"/>
+                            <f:selectItem itemLabel="USER" itemValue="USER"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-usuario @this"
+                                     actionListener="#{usuarioController.guardarUsuario}"
+                                     oncomplete="PF('ventanaModalUsuario').hide(); PF('tablaUsuario').clearFilters();" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalUsuario').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="ventanaEliminarUsuario" ShowEffect="fade" width="300"
+                             message="Desea eliminar el usuario?" header="Confirmar" severity="warn">
+                <p:commandButton value="Si" icon="pi pi-check" process="@this"
+                                 actionListener="#{usuarioController.eliminarUsuario}"
+                                 oncomplete="PF('ventanaEliminarUsuario').hide(); PF('tablaUsuario').clearFilters();" />
+                <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarUsuario').hide()"
+                                 styleClass="ui-button-secondary" type="button"/>
+            </p:confirmDialog>
+        </h:form>
+    </div>
+
+    <footer style="background-color:#1a1a1a; color:#f5f5f5; text-align:center; padding:1rem; margin-top:auto;">
+        <p class="m-0">© 2025 404 Hotel Not Found - Todos los derechos reservados</p>
+    </footer>
+</h:body>
+</html>

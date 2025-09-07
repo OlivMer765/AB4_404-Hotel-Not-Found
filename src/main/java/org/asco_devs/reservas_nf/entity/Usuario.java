@@ -30,7 +30,7 @@ public class Usuario {
     @Column(nullable = false, length = 8)
     private String telefono;
 
-    @Column(length = 128)
+    @Column(nullable = false, length = 128)
     private String direccion;
 
     @Column(nullable = false, length = 100)

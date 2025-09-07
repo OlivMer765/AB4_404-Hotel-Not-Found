@@ -1,0 +1,25 @@
+package org.asco_devs.reservas_nf.service;
+
+
+import lombok.RequiredArgsConstructor;
+import org.asco_devs.reservas_nf.entity.Usuario;
+import org.asco_devs.reservas_nf.repository.UsuarioRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class UsuarioService {
+
+    private final UsuarioRepository usuarioRepository;
+
+    public Usuario registrar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    public Optional<Usuario> login(String correo, String contrasena) {
+        return usuarioRepository.findByCorreo(correo)
+                .filter(u -> u.getContrasena().equals(contrasena));
+    }
+}

@@ -14,24 +14,22 @@
 
             <div class="card mb-3 surface-card">
                 <p:menubar>
-                    <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
-                                update=":formulario-habitaciones:tabla-habitaciones"
-                                actionListener="#{habitacioncontroller.cargarDatos}"/>
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
+                                outcome="admin.xhtml"/>
                     <p:submenu label="Principal" icon="pi pi-home" >
-                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
                         <p:menuitem value="Huéspedes" icon="pi pi-users" outcome="huesped.xhtml"/>
                         <p:menuitem value="Reservas" icon="pi pi-calendar" outcome="reserva.xhtml"/>
                         <p:menuitem value="Usuarios" icon="pi pi-id-card" outcome="usuario.xhtml"/>
                     </p:submenu>
                     <p:menuitem value="Nueva Habitación" icon="pi pi-fw pi-plus"
-                                actionListener="#{habitacioncontroller.agregarHabitacion()}"
+                                actionListener="#{habitacionController.agregarHabitacion()}"
                                 update="formulario-modal:ventana-habitacion"
                                 oncomplete="PF('ventanaModalHabitacion').show()"/>
                 </p:menubar>
             </div>
 
             <div class="card surface-card">
-                <p:dataTable value="#{habitacioncontroller.habitaciones}" var="habitacion" id="tabla-habitaciones"
+                <p:dataTable value="#{habitacionController.habitaciones}" var="habitacion" id="tabla-habitaciones"
                              widgetVar="tablaHabitacion">
                     <f:facet name="header">
                         <div class="flex justify-content-center flex-wrap card-container">
@@ -61,14 +59,14 @@
                                              oncomplete="PF('ventanaModalHabitacion').show()"
                                              onclick="PF('ventanaModalHabitacion').hide()"
                                              class="ui-button-primary">
-                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacioncontroller.habitacionSelecionado}"/>
+                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacionController.habitacionSelecionado}"/>
                             </p:commandButton>
 
                             <p:commandButton value="Eliminar" icon="pi pi-trash"
                                              class="ui-button-danger"
                                              process="@this"
                                              oncomplete="PF('ventanaEliminarHabitacion').show()">
-                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacioncontroller.habitacionSelecionado}"/>
+                                <f:setPropertyActionListener value="#{habitacion}" target="#{habitacionController.habitacionSelecionado}"/>
                             </p:commandButton>
                         </div>
                     </p:column>
@@ -83,7 +81,7 @@
 
                     <div class="field">
                         <p:outputLabel for="tipo" value="Tipo: " />
-                        <p:selectOneMenu id="tipo" value="#{habitacioncontroller.habitacionSelecionado.tipo}" required="true" style="width:100%">
+                        <p:selectOneMenu id="tipo" value="#{habitacionController.habitacionSelecionado.tipo}" required="true" style="width:100%">
                             <f:selectItem itemLabel="Seleccione un tipo" itemValue="" noSelectionOption="true"/>
                             <f:selectItem itemLabel="Simple" itemValue="Individual"/>
                             <f:selectItem itemLabel="Doble" itemValue="Doble"/>
@@ -93,7 +91,7 @@
 
                     <div class="field">
                         <p:outputLabel for="estado" value="Estado: " />
-                        <p:selectOneMenu id="estado" value="#{habitacioncontroller.habitacionSelecionado.estado}" required="true" style="width:100%">
+                        <p:selectOneMenu id="estado" value="#{habitacionController.habitacionSelecionado.estado}" required="true" style="width:100%">
                             <f:selectItem itemLabel="Seleccione un estado" itemValue="" noSelectionOption="true"/>
                             <f:selectItem itemLabel="Disponible" itemValue="Disponible"/>
                             <f:selectItem itemLabel="Ocupada" itemValue="Ocupada"/>
@@ -102,13 +100,13 @@
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-habitacion @this" onclick="PF('ventanaModalHabitacion').hide()" actionListener="#{habitacioncontroller.guardarHabitacion()}"/>
+                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-habitacion @this" onclick="PF('ventanaModalHabitacion').hide()" actionListener="#{habitacionController.guardarHabitacion()}"/>
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalHabitacion').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
 
             <p:confirmDialog widgetVar="ventanaEliminarHabitacion" ShowEffect="fade" width="300" message="Desea eliminar la habitación?" header="Confirmar" severity="warn">
-                <p:commandButton value="Si" icon="pi pi-check" process="@this" actionListener="#{habitacioncontroller.eliminarHabitacion()}" oncomplete="PF('ventanaEliminarHabitacion').hide()" />
+                <p:commandButton value="Si" icon="pi pi-check" process="@this" actionListener="#{habitacionController.eliminarHabitacion()}" oncomplete="PF('ventanaEliminarHabitacion').hide()" />
                 <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarHabitacion').hide()" styleClass="ui-button-secondary" type="button"/>
             </p:confirmDialog>
         </h:form>

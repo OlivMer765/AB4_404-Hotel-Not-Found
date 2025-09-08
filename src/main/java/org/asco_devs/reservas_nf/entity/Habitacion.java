@@ -1,19 +1,43 @@
 package org.asco_devs.reservas_nf.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+import java.io.Serializable;
 
-@Entity(name = "Habitaciones")
+@Entity
+@Table(name = "Habitaciones")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public class Habitacion implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-public class Habitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdHabitacion")
+    @Column(name = "idHabitacion")
     private Integer idHabitacion;
-    private String tipo;
-    private String estado;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
+    private TipoHabitacion tipo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private EstadoHabitacion estado;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Habitacion habitacion = (Habitacion) o;
+        return idHabitacion != null && idHabitacion.equals(habitacion.idHabitacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return idHabitacion != null ? idHabitacion.hashCode() : 0;
+    }
 }

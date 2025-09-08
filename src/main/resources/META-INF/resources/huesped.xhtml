@@ -15,11 +15,9 @@
 
             <div class="card mb-3 surface-card">
                 <p:menubar>
-                    <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
-                                update=":formulario-huespedes:tabla-huespedes"
-                                actionListener="#{huespedController.cargarDatos}"/>
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
+                                outcome="admin.xhtml"/>
                     <p:submenu label="Principal" icon="pi pi-home">
-                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
                         <p:menuitem value="Reservas" icon="pi pi-calendar" outcome="reserva.xhtml"/>
                         <p:menuitem value="Habitaciones" icon="pi pi-home" outcome="habitacion.xhtml"/>
                         <p:menuitem value="Usuarios" icon="pi pi-id-card" outcome="usuario.xhtml"/>

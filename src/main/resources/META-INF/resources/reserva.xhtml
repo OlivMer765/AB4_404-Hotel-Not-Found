@@ -10,16 +10,15 @@
 
     <div class="card mb-3 p-4 surface-card">
         <h:form id="formulario-reservas">
-            <p:growl id="mensaje-emergente" showDetails="true"/>
+            <p:growl id="mensaje-emergente" showDetail="true"/>
 
             <div class="card mb-3 surface-card">
                 <p:menubar>
                     <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
-                                outcome="index.xhtml"/>
-                    <p:submenu label="Habitaciones" icon="pi pi-home">
-                        <p:menuitem value="Menú Principal" icon="pi pi-th-large" outcome="index.xhtml"/>
+                                outcome="admin.xhtml"/>
+                    <p:submenu label="Principal" icon="pi pi-home" >
                         <p:menuitem value="Huéspedes" icon="pi pi-users" outcome="huesped.xhtml"/>
-                        <p:menuitem value="Habitaciones" icon="pi pi-home" outcome="habitacion.xhtml"/>
+                        <p:menuitem value="Habitaciones" icon="pi pi-calendar" outcome="habitacion.xhtml"/>
                         <p:menuitem value="Usuarios" icon="pi pi-id-card" outcome="usuario.xhtml"/>
                     </p:submenu>
                     <p:menuitem value="Nueva Reserva" icon="pi pi-fw pi-plus"
@@ -31,7 +30,9 @@
 
             <div class="card surface-card">
                 <p:dataTable value="#{reservaController.reservas}" var="reserva" id="tabla-reservas"
-                             widgetVar="tablaReserva">
+                             widgetVar="tablaReserva" rows="10" paginator="true"
+                             rowKey="#{reserva.idReserva}" selectionMode="single"
+                             selection="#{reservaController.reservaSelecionada}">
                     <f:facet name="header">
                         <div class="flex justify-content-center flex-wrap card-container">
                             <div class="flex align-items-center justify-content-center w-rem20 h4rem surface-card font-bold m-2 border-round px-4">
@@ -45,19 +46,23 @@
                     </p:column>
 
                     <p:column headerText="Fecha Entrada">
-                        <h:outputText value="#{reserva.fechaEntrada}"/>
+                        <h:outputText value="#{reserva.fechaEntrada}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Fecha Salida">
-                        <h:outputText value="#{reserva.fechaSalida}"/>
+                        <h:outputText value="#{reserva.fechaSalida}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Huésped">
-                        <h:outputText value="#{reserva.idHuesped}"/>
+                        <h:outputText value="#{reserva.huesped.nombre} #{reserva.huesped.apellido}"/>
                     </p:column>
 
                     <p:column headerText="Habitación">
-                        <h:outputText value="#{reserva.idHabitacion}"/>
+                        <h:outputText value="ID: #{reserva.habitacion.idHabitacion} - Tipo: #{reserva.habitacion.tipo} - Estado: #{reserva.habitacion.estado}"/>
                     </p:column>
 
                     <p:column headerText="C.R.U.D.">
@@ -88,33 +93,48 @@
 
                     <div class="field">
                         <p:outputLabel for="fechaEntrada" value="Fecha Entrada:" />
-                        <p:calendar id="fechaEntrada" value="#{reservaController.reservaSelecionada.fechaEntrada}" pattern="yyyy-MM-dd HH:mm" showTime="true"/>
+                        <p:calendar id="fechaEntrada" value="#{reservaController.reservaSelecionada.fechaEntrada}" pattern="yyyy-MM-dd HH:mm" showTime="true" required="true"/>
                     </div>
 
                     <div class="field">
                         <p:outputLabel for="fechaSalida" value="Fecha Salida:" />
-                        <p:calendar id="fechaSalida" value="#{reservaController.reservaSelecionada.fechaSalida}" pattern="yyyy-MM-dd HH:mm" showTime="true"/>
+                        <p:calendar id="fechaSalida" value="#{reservaController.reservaSelecionada.fechaSalida}" pattern="yyyy-MM-dd HH:mm" showTime="true" required="true"/>
                     </div>
 
                     <div class="field">
                         <p:outputLabel for="huesped" value="Huésped:" />
-                        <p:inputText id="huesped" value="#{reservaController.reservaSelecionada.idHuesped}" required="true"/>
+                        <p:selectOneMenu id="huesped" value="#{reservaController.selectedHuespedId}"
+                                         required="true" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecciona un Huésped" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{reservaController.huespedesDisponibles}" var="h"
+                                           itemLabel="#{h.nombre} #{h.apellido} (ID: #{h.idHuesped})" itemValue="#{h.idHuesped}"/>
+                        </p:selectOneMenu>
                     </div>
 
                     <div class="field">
                         <p:outputLabel for="habitacion" value="Habitación:" />
-                        <p:inputText id="habitacion" value="#{reservaController.reservaSelecionada.idHabitacion}" required="true"/>
+                        <p:selectOneMenu id="habitacion" value="#{reservaController.selectedHabitacionId}"
+                                         required="true" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecciona una Habitación" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{reservaController.habitacionesDisponibles}" var="hab"
+                                           itemLabel="ID: #{hab.idHabitacion} - Tipo: #{hab.tipo} - Estado: #{hab.estado}" itemValue="#{hab.idHabitacion}"/>
+                        </p:selectOneMenu>
                     </div>
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-reserva @this" onclick="PF('ventanaModalReserva').hide()" actionListener="#{reservaController.guardarReserva()}"/>
+                    <p:commandButton value="Guardar" icon="pi pi-check" process="ventana-reserva @this"
+                                     actionListener="#{reservaController.guardarReserva()}"
+                                     update="formulario-reservas:mensaje-emergente formulario-reservas:tabla-reservas"
+                                     oncomplete="if (!args.validationFailed) PF('ventanaModalReserva').hide()"/>
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalReserva').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
 
             <p:confirmDialog widgetVar="ventanaEliminarReserva" showEffect="fade" width="300" message="¿Desea eliminar la reserva?" header="Confirmar" severity="warn">
-                <p:commandButton value="Sí" icon="pi pi-check" process="@this" actionListener="#{reservaController.eliminarReserva()}" oncomplete="PF('ventanaEliminarReserva').hide()" />
+                <p:commandButton value="Sí" icon="pi pi-check" process="@this" actionListener="#{reservaController.eliminarReserva()}"
+                                 oncomplete="PF('ventanaEliminarReserva').hide()"
+                                 update="formulario-reservas:mensaje-emergente formulario-reservas:tabla-reservas"/>
                 <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarReserva').hide()" styleClass="ui-button-secondary" type="button"/>
             </p:confirmDialog>
         </h:form>

@@ -17,12 +17,12 @@ import java.util.List;
 @Component
 
 @Data
-public class habitacioncontroller {
+public class HabitacionController {
     @Autowired
     IHabitacionService habitacionService;
     private List<Habitacion> habitaciones;
     private Habitacion habitacionSelecionado;
-    private static Logger logger = LoggerFactory.getLogger(habitacioncontroller.class);
+    private static Logger logger = LoggerFactory.getLogger(HabitacionController.class);
 
     @PostConstruct
     public void init() {

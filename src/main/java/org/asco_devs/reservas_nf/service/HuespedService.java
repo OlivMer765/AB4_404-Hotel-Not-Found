@@ -19,7 +19,7 @@ public class HuespedService implements IHuespedService {
     }
 
     @Override
-    public Huesped buscarHuespedes(Integer idHuesped) {
+    public Huesped buscarHuespedPorId(Integer idHuesped) {
         Optional<Huesped> huesped = huespedRepository.findById(idHuesped);
         return huesped.orElse(null);
     }

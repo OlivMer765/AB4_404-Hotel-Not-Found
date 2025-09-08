@@ -22,7 +22,7 @@ public class HabitacionService implements IHabitacionService {
         return habitaciones;
     }
 
-    public Habitacion buscarHabitacionporId (Integer codigo){
+    public Habitacion buscarHabitacionPorId (Integer codigo){
             Habitacion habitacion = habitacionRepository.findById(codigo).orElse(null);return habitacion;
     }
         public void guardarHabitacion (Habitacion habitacion){
